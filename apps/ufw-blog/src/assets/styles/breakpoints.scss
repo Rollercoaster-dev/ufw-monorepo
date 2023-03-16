@@ -1,0 +1,49 @@
+// Sass variables that define breakpoint values
+$breakpoints: (
+  mobile: 576px,
+  tablet: 768px,
+  laptop: 1080px,
+  large: 1280px,
+  x-large: 1440px,
+);
+
+/// Mixin to manage responsive breakpoints
+/// @author Joe Czarnecki
+/// @param {String} $breakpoint - Breakpoint name
+/// @param {String} $direction
+/// @require $breakpoints
+@mixin breakpoint($breakpoint, $direction) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    @if $direction == "down" {
+      @media (max-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+      }
+    }
+    @if $direction == "up" {
+      @media (min-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+      }
+    }
+    @if map-has-key($breakpoints, $direction) {
+      @media (min-width: map-get($breakpoints, $breakpoint)) and (max-width: map-get($breakpoints, $direction)) {
+        @content;
+      }
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+// Usage
+// .selector {
+//   color: red;
+
+//   @include respond-to('small') {
+//     color: blue;
+//   }
+// }

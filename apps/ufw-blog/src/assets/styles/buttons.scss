@@ -1,0 +1,39 @@
+@import "./colors.scss";
+@import "./shadow.scss";
+@import "./fonts.scss";
+@import "./animation.scss";
+
+.btn {
+  width: 200px;
+  height: 56px;
+  border-radius: 50px;
+}
+a.btn {
+  width: 200px;
+  height: 56px;
+  border-radius: 50px;
+  border: none;
+  color: $white;
+  background-color: $magenta;
+  font-family: $font-regular;
+
+  text-align: center;
+  @include fontSize(h5);
+  font-weight: bold;
+
+  cursor: pointer;
+  @include transition();
+  &:hover {
+    @include shadow-hover();
+  }
+
+  // padding: $space-small 0 0 0;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  .link-text {
+    color: $white;
+    margin: auto;
+  }
+}

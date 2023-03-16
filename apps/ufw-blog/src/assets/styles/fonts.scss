@@ -1,0 +1,201 @@
+@import "./colors.scss";
+@import "./spaces.scss";
+@import "./breakpoints.scss";
+
+
+/* barlow-100 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 100;
+  src: url('../fonts/barlow-v12-latin-100.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+       url('../fonts/barlow-v12-latin-100.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* barlow-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/barlow-v12-latin-regular.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+       url('../fonts/barlow-v12-latin-regular.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* barlow-600 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/barlow-v12-latin-600.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+       url('../fonts/barlow-v12-latin-600.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* barlow-800 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 800;
+  src: url('../fonts/barlow-v12-latin-800.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
+       url('../fonts/barlow-v12-latin-800.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+$font-regular: Barlow;
+$font-bold: Barlow;
+$font-sizes: (
+  h1: 48px,
+  h2: 40px,
+  h3: 32px,
+  h4: 24px,
+  h5: 18px,
+  h6: 16px,
+  subline: 24px,
+  p: 18px,
+);
+$font-sizes-mobile: (
+  h1: 32px,
+  h2: 24px,
+  h3: 18px,
+  h4: 18px,
+  h5: 16px,
+  h6: 14px,
+  subline: 18px,
+  p: 16px,
+);
+$line-heights: (
+  h1: 72px,
+  h2: 64px,
+  h3: 40px,
+  h4: 32px,
+  h5: 24px,
+  h6: 18px,
+  subline: 24px,
+  p: 32px,
+);
+$line-heights-mobile: (
+  h1: 48px,
+  h2: 40px,
+  h3: 32px,
+  h4: 24px,
+  h5: 24px,
+  h6: 18px,
+  subline: 36px,
+  p: 30px,
+);
+
+/// Mixin to manage responsive breakpoints
+/// @author Joe Czarnecki
+/// @param {String} $size subline, copy, h1-h6
+/// @require $font-sizes
+/// @require $font-sizes-mobile
+@mixin fontSize($size) {
+  @if map-has-key($font-sizes, $size) {
+    // return the correct font size
+    font-size: map-get($font-sizes, $size);
+    @content;
+  }
+  @if map-has-key($font-sizes-mobile, $size) {
+
+    @include breakpoint(tablet, down) {
+      font-size: map-get($font-sizes-mobile, $size);
+    }
+    @content;
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$fontSize}`. "
+        + "Available breakpoints are: #{map-keys($fontSizes)}.";
+  }
+}
+@mixin lineHeight($size) {
+  @if map-has-key($line-heights, $size) {
+    // return the correct font size
+    line-height: map-get($line-heights, $size);
+    @content;
+  }
+  @if map-has-key($line-heights-mobile, $size) {
+    @include breakpoint(tablet, down) {
+      line-height: map-get($line-heights, $size);
+    }
+
+    @content;
+  }
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$fontSize}`. "
+        + "Available breakpoints are: #{map-keys($fontSizes)}.";
+  }
+}
+
+* {
+  font-family: $font-regular;
+  color: $text;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-bold;
+  font-weight: 600;
+  margin: 0 0 $space-medium 0;
+}
+@each $key, $value in $font-sizes {
+  #{"" + $key} {
+    @include fontSize(#{$key});
+    @include lineHeight(#{$key});
+  }
+}
+
+
+body,
+.std {
+  font-family: $font-regular;
+  @include fontSize(p);
+  @include lineHeight(p);
+  margin: 0 0 $space-small 0;
+}
+
+.pre-title {
+  @include fontSize(h5);
+
+  padding-bottom: $space-small;
+
+  font-weight: bold;
+  color: $magenta;
+}
+
+.green-bold {
+  @include fontSize(h5);
+
+  font-weight: bold;
+  color: $mint-dark;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.bold {
+  font-family: $font-bold;
+  font-weight: bold;
+}
+
+:export {
+  fontRegular: $font-regular;
+  fontSemiBold: $font-bold;
+  fontsizes: {
+    h1: map-get($font-sizes, h1);
+    h2: map-get($font-sizes, h2);
+    h3: map-get($font-sizes, h3);
+    h4: map-get($font-sizes, h4);
+    h5: map-get($font-sizes, h5);
+    h6: map-get($font-sizes, h6);
+    p: map-get($font-sizes, p);
+    subline: map-get($font-sizes, subline);
+  }
+  // fontSizesMobile: $font-sizes-mobile;
+}

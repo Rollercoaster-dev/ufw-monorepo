@@ -1,0 +1,49 @@
+:host {
+  .logo-container {
+    cursor: pointer;
+    transition: transform 200ms;
+
+    .hidden-text {
+      opacity: 0;
+      white-space: nowrap;
+      transition: opacity 500ms, max-width 500ms;
+    }
+    .Utterly,
+    .Fucking,
+    .Wonderful {
+      opacity: 0;
+      max-width: 0;
+      transition: opacity 500ms, max-width 500ms;
+    }
+
+    &:hover {
+      // .U,
+      // .F,
+      // .W {
+      //   display: none;
+      // }
+
+      .Utterly {
+        opacity: 1;
+        max-width: 100px;
+      }
+
+      .Fucking {
+        opacity: 1;
+        max-width: 100px;
+        transition-delay: 500ms;
+      }
+
+      .Wonderful {
+        opacity: 1;
+        max-width: 100px;
+        transition-delay: 1000ms;
+      }
+    }
+
+    &.clicked {
+      letter-spacing: 5px;
+      transition: letter-spacing 200ms;
+    }
+  }
+}

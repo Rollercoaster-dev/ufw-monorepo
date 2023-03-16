@@ -1,0 +1,100 @@
+
+@import "./containers.scss";
+@import "./spaces.scss";
+@import "./fonts.scss";
+@import "./colors.scss";
+@import "./animation.scss";
+@import "./shadow.scss";
+@import "./links.scss";
+@import "./buttons.scss";
+
+// global styles
+html {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+}
+.main-container {
+  max-width: $main-container;
+  padding: 0 $space-default;
+  // height: 100vh;
+  margin: -54px auto 0 auto;
+  @include breakpoint(tablet, down) {
+    max-width: 100vw;
+    padding: 0;
+  }
+}
+.magenta-text {
+  color: $magenta;
+}
+
+.flex {
+  display: flex;
+  &-center-align {
+    display: flex;
+    align-content: center;
+  }
+  &-center-justify {
+    display: flex;
+    justify-content: center;
+  }
+  &-row {
+    display: flex;
+    flex-direction: row;
+    &-reverse {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+  }
+  &-column {
+    display: flex;
+    flex-direction: column;
+    &-reverse {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    &-center {
+      justify-content: center;
+      &-all {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        > * {
+          margin: auto;
+        }
+      }
+    }
+  }
+}
+hr {
+  height: 1px;
+  border: none;
+  background-color: $text;
+
+  @include breakpoint(tablet, down) {
+    &.mobile-hr {
+      display: block;
+
+      height: qpx;
+      border: none;
+      background-color: $black;
+    }
+  }
+
+
+}
+.no-select {
+  -webkit-touch-callout:none; /* iOS Safari */
+-webkit-user-select:none;   /* Chrome/Safari/Opera */
+-khtml-user-select:none;    /* Konqueror */
+-moz-user-select:none;      /* Firefox */
+-ms-user-select:none;       /* Internet Explorer/Edge */
+user-select:none;           /* Non-prefixed version */
+cursor: default;
+}

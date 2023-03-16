@@ -1,0 +1,44 @@
+@import "../styles/animation.scss";
+@import "../styles/colors.scss";
+@import "../styles/fonts.scss";
+@import "../styles/shadow.scss";
+
+.menu-link {
+  @include transition();
+  color: $white;
+  padding: $space-small;
+  width: calc(100% - (2 * $space-small));
+  display: block;
+  @include transition();
+
+  &:hover {
+    color: $white;
+   text-decoration: underline;
+   text-decoration-thickness: 4px;
+   text-underline-offset: 8px;
+
+  }
+}
+
+a {
+  @include transition();
+  padding: 2px 4px;
+  text-decoration-thickness: 4px;
+    text-underline-offset: 8px;
+    text-decoration: none;
+  color: $magenta;
+  * {
+    color: $magenta
+  }
+  &:hover {
+    color: $magenta;
+    text-decoration: underline;
+
+
+    // box-shadow: 2px 1px 3px -1px rgba(0,0,0,0.2);
+  }
+}
+
+// create a box shadow only on the right and bottom
+// @mixin shadow-right-bottom($color, $size) {
+

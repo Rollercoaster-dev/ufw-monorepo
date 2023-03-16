@@ -1,0 +1,83 @@
+/**
+ * space definition
+ */
+
+$base-factor: 8px;
+$space-none: 0;
+
+/* 4px */
+$space-inline-block: 0.25rem !default;
+
+/* 8px */
+$space-tiny: 0.5rem !default;
+
+/* 12px */
+$space-smaller: 0.75rem !default;
+
+/* 16px */
+$space-small: 1rem !default;
+
+/* 24px */
+$space-default: 1.5rem !default;
+
+/* 32px */
+$space-medium: 2rem !default;
+
+/* 40px */
+$space-xmedium: 2.5rem !default;
+
+/* 48px */
+$space-large: 3rem !default;
+
+/* 64px */
+$space-xlarge: 4rem !default;
+
+/* 96px */
+$space-xxlarge: 6rem !default;
+$space-massive: 12rem !default;
+
+$space-event-image: calc(100% - 268px - $space-medium);
+
+/* 128px */
+$space-xxxlarge: 8rem !default;
+$space-component: $space-xlarge;
+$space-component-header: $space-large;
+$space-list: (
+  "none": $space-none,
+  "inline-block": $space-inline-block,
+  "tiny": $space-tiny,
+  "smaller": $space-smaller,
+  "small": $space-small,
+  "default": $space-default,
+  "medium": $space-medium,
+  "xmedium": $space-xmedium,
+  "large": $space-large,
+  "xlarge": $space-xlarge,
+  "xxlarge": $space-xxlarge,
+  "xxxlarge": $space-xxxlarge
+);
+.w-100 {
+  width: 100%;
+}
+.m-a {
+  margin: auto;
+}
+.space-between {
+  justify-content: space-between;
+}
+:export {
+  spaceList: {
+    none: $space-none;
+    inlinelock: $space-inline-block;
+    tiny: $space-tiny;
+    smaller: $space-smaller;
+    small: $space-small;
+    default: $space-default;
+    medium: $space-medium;
+    xmedium: $space-xmedium;
+    large: $space-large;
+    xlarge: $space-xlarge;
+    xxlarge: $space-xxlarge;
+    xxxlarge: $space-xxxlarge;
+  }
+}

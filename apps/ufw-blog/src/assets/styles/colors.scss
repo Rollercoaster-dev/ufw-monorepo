@@ -1,0 +1,67 @@
+$magenta: #d91c5c;
+$pink: #fd6f97;
+$darkness: #041b38;
+$text: #0e141b;
+$mint-dark: #01d5a2;
+$mint-light: #88ffd1;
+$black: #0e141b;
+// greys
+$white: #fff;
+$grey01: #e9ecf1;
+$grey02: #c2c7cf;
+$grey03: #a5aab3;
+
+// interaction
+
+$error: #df1010;
+$success: #1cd032;
+
+// in consideration
+
+$bismark: #001e59;
+$bismark-hover: #3c5a95;
+$violent: #4841a1;
+$skylark: #66ccf2;
+$dust: #253a4c;
+
+$colors-list: (
+  magenta: $magenta,
+  pink: $pink,
+  darkness: $darkness,
+  text: $text,
+  mintDark: $mint-dark,
+  mintLight: $mint-light,
+  white: $white,
+  grey01: $grey01,
+  grey02: $grey02,
+  grey03: $grey03,
+  bismark: $bismark,
+  bismark-hover: $bismark-hover,
+  violent: $violent,
+  skylark: $skylark,
+  dust: $dust,
+);
+
+@each $key, $value in $colors-list {
+  .bg-#{"" + $key} {
+    background-color: $value;
+  }
+  .text-#{"" + $key} {
+    color: $value;
+  }
+}
+
+:export {
+  magenta: $magenta;
+  pink: $pink;
+  darkness: $darkness;
+  text: $text;
+  mintDark: $mint-dark;
+  mintLight: $mint-light;
+  white: $white;
+  grey: {
+    one: $grey01;
+    two: $grey02;
+    three: $grey03;
+  }
+}
