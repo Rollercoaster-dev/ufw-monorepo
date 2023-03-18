@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: ` <main class="flex flex-col h-full ">
-    main
     <ng-content></ng-content>
   </main>`,
   styleUrls: ['./main.component.scss'],

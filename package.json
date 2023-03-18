@@ -11,6 +11,7 @@
     "@angular-eslint/eslint-plugin": "~15.0.0",
     "@angular-eslint/eslint-plugin-template": "~15.0.0",
     "@angular-eslint/template-parser": "~15.0.0",
+    "@angular/animations": "~15.2.0",
     "@angular/cli": "~15.2.0",
     "@angular/compiler-cli": "~15.2.0",
     "@angular/language-service": "~15.2.0",
@@ -44,7 +45,7 @@
     "typescript": "~4.9.5"
   },
   "dependencies": {
-    "@angular/animations": "~15.2.0",
+    "@angular/cdk": "^15.2.3",
     "@angular/common": "~15.2.0",
     "@angular/compiler": "~15.2.0",
     "@angular/core": "~15.2.0",
@@ -52,7 +53,6 @@
     "@angular/platform-browser": "~15.2.0",
     "@angular/platform-browser-dynamic": "~15.2.0",
     "@angular/router": "~15.2.0",
-    "ngx-animate": "^1.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
