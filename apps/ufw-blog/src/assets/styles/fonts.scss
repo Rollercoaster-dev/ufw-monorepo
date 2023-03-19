@@ -1,7 +1,6 @@
-@import "./colors.scss";
-@import "./spaces.scss";
-@import "./breakpoints.scss";
-
+@import './colors.scss';
+@import './spaces.scss';
+@import './breakpoints.scss';
 
 /* barlow-100 - latin */
 @font-face {
@@ -9,8 +8,9 @@
   font-family: 'Barlow';
   font-style: normal;
   font-weight: 100;
-  src: url('../fonts/barlow-v12-latin-100.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
-       url('../fonts/barlow-v12-latin-100.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: url('../fonts/barlow-v12-latin-100.woff2') format('woff2'),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url('../fonts/barlow-v12-latin-100.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 /* barlow-regular - latin */
 @font-face {
@@ -18,8 +18,9 @@
   font-family: 'Barlow';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/barlow-v12-latin-regular.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
-       url('../fonts/barlow-v12-latin-regular.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: url('../fonts/barlow-v12-latin-regular.woff2') format('woff2'),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url('../fonts/barlow-v12-latin-regular.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 /* barlow-600 - latin */
 @font-face {
@@ -27,8 +28,9 @@
   font-family: 'Barlow';
   font-style: normal;
   font-weight: 600;
-  src: url('../fonts/barlow-v12-latin-600.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
-       url('../fonts/barlow-v12-latin-600.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: url('../fonts/barlow-v12-latin-600.woff2') format('woff2'),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url('../fonts/barlow-v12-latin-600.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 /* barlow-800 - latin */
 @font-face {
@@ -36,8 +38,9 @@
   font-family: 'Barlow';
   font-style: normal;
   font-weight: 800;
-  src: url('../fonts/barlow-v12-latin-800.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+ */
-       url('../fonts/barlow-v12-latin-800.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+  src: url('../fonts/barlow-v12-latin-800.woff2') format('woff2'),
+    /* Chrome 36+, Opera 23+, Firefox 39+ */
+      url('../fonts/barlow-v12-latin-800.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 $font-regular: Barlow;
@@ -95,7 +98,6 @@ $line-heights-mobile: (
     @content;
   }
   @if map-has-key($font-sizes-mobile, $size) {
-
     @include breakpoint(tablet, down) {
       font-size: map-get($font-sizes-mobile, $size);
     }
@@ -144,18 +146,17 @@ h6 {
   margin: 0 0 $space-medium 0;
 }
 @each $key, $value in $font-sizes {
-  #{"" + $key} {
+  #{'' + $key} {
     @include fontSize(#{$key});
     @include lineHeight(#{$key});
   }
 }
 
-
 body,
 .std {
   font-family: $font-regular;
-  @include fontSize(p);
-  @include lineHeight(p);
+  // @include fontSize(p);
+  // @include lineHeight(p);
   margin: 0 0 $space-small 0;
 }
 

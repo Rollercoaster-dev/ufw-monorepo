@@ -17,15 +17,27 @@ import { DraggingDirective } from '../dragging/dragging.directive';
   template: `
     <div class="flex">
       <div class="logo-container flex items-center select-none" #logoContainer>
-        <div class="U text-4xl font-bold">U</div>
-        <div class="Utterly hidden-text text-3xl font-bold">tterly</div>
-        <div class="F text-4xl font-bold">F</div>
-        <div class="Fucking hidden-text text-3xl font-bold">ucking</div>
-        <div class="W text-4xl font-bold">W</div>
-        <div class="Wonderful hidden-text text-3xl font-bold">onderful</div>
+        <div class="U ">U</div>
+        <div
+          class="Utterly hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
+        >
+          tterly
+        </div>
+        <div class="F ">F</div>
+        <div
+          class="Fucking hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
+        >
+          ucking
+        </div>
+        <div class="W ">W</div>
+        <div
+          class="Wonderful hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
+        >
+          onderful
+        </div>
       </div>
       <div
-        class="tab"
+        class="tab h-full w-5"
         #tab
         ufwLDragging
         [min]="minSlide - 4"
@@ -38,7 +50,7 @@ import { DraggingDirective } from '../dragging/dragging.directive';
         }"
         (distanceTraveled)="handleDistanceTraveled($event)"
       >
-        <div class="inner-tab"></div>
+        <div class="inner-tab h-full"></div>
       </div>
     </div>
   `,
@@ -81,7 +93,7 @@ export class UfwLogoComponent implements AfterViewInit {
     this.maxSlide = this.minSlide + this.maxTravel;
   }
   @HostBinding('class') get classes() {
-    return `w-11/12`;
+    return `w-11/12  mx-auto`;
   }
 
   handleDistanceTraveled(amount: number) {

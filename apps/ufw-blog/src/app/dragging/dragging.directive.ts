@@ -55,11 +55,13 @@ export class DraggingDirective implements AfterViewInit {
   }
 
   @HostListener('mousedown', ['$event'])
-  onMouseDown(event: MouseEvent) {
+  @HostListener('touchstart', ['$event'])
+  onMouseDown(event: MouseEvent | TouchEvent) {
+    const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
     this.#dragging = true;
 
-    this.#initialX = event.clientX;
-    this.#initialY = event.clientY;
+    this.#initialX = touch.clientX;
+    this.#initialY = touch.clientY;
 
     // Store the initial position of the element
     this.#initialPosition = {
@@ -70,12 +72,15 @@ export class DraggingDirective implements AfterViewInit {
   }
 
   @HostListener('document:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
+  @HostListener('document:touchmove', ['$event'])
+  onMouseMove(event: MouseEvent | TouchEvent) {
     if (this.#dragging) {
       event.preventDefault();
+      const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
+
       this.zone.runOutsideAngular(() => {
-        const dx = event.clientX - this.#initialPosition.x;
-        const dy = event.clientY - this.#initialPosition.y;
+        const dx = touch.clientX - this.#initialPosition.x;
+        const dy = touch.clientY - this.#initialPosition.y;
 
         let distanceTraveled = 0;
 
@@ -101,7 +106,8 @@ export class DraggingDirective implements AfterViewInit {
   }
 
   @HostListener('document:mouseup', ['$event'])
-  onMouseUp(event: MouseEvent) {
+  @HostListener('document:touchend', ['$event'])
+  onMouseUp(event: MouseEvent | TouchEvent) {
     this.#dragging = false;
     this.dragging.emit(false);
   }
