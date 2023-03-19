@@ -1,14 +1,23 @@
+/**
+* sm: 640px
+* md: 768px
+* lg: 1024px
+* xl: 1280px
+* 2xl: 1536px
+**/
+
 :host {
   display: block;
   position: relative;
   transition: all 300ms;
-  max-width: 1500px;
+
+  @apply w-[310px] md:w-[670px];
   .logo-container {
-    // cursor: pointer;
+    padding-left: 4px;
     .U,
     .F,
     .W {
-      @apply xl:text-9xl lg:text-8xl md:text-6xl text-4xl font-bold;
+      @apply xl:text-8xl lg:text-7xl md:text-7xl text-3xl font-bold;
     }
     .hidden-text {
       overflow: hidden;
@@ -16,7 +25,8 @@
       width: 0;
       transition: width 300ms;
       line-height: 1.5 !important;
-      @apply xl:text-9xl lg:text-8xl md:text-6xl text-4xl font-bold;
+
+      @apply xl:text-7xl lg:text-6xl md:text-6xl text-2xl font-bold;
     }
 
     &.clicked {

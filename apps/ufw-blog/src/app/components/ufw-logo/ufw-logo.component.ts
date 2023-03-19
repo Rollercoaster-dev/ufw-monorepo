@@ -8,53 +8,55 @@ import {
   HostBinding,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DraggingDirective } from '../dragging/dragging.directive';
+import { DraggingDirective } from '../../dragging/dragging.directive';
+import { PullTabComponent } from '../pulll-tab/pull-tab.component';
 
 @Component({
   selector: 'ufw-l-logo',
   standalone: true,
-  imports: [CommonModule, DraggingDirective],
   template: `
-    <div class="flex">
+    <div class="flex m-auto">
       <div class="logo-container flex items-center select-none" #logoContainer>
-        <div class="U ">U</div>
-        <div
-          class="Utterly hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
-        >
-          tterly
-        </div>
-        <div class="F ">F</div>
-        <div
-          class="Fucking hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
-        >
-          ucking
-        </div>
-        <div class="W ">W</div>
-        <div
-          class="Wonderful hidden-text lg:text-7xl md:text-5xl text-2xl font-bold"
-        >
-          onderful
-        </div>
+        <div class="U ">u</div>
+        <div class="Utterly hidden-text ">tterly</div>
+        <div class="F ">f</div>
+        <div class="Fucking hidden-text">ucking</div>
+        <div class="W ">w</div>
+        <div class="Wonderful hidden-text">onderful</div>
       </div>
-      <div
+      <ufw-l-pull-tab
+        #tab
+        [min]="minSlide - 4"
+        [max]="maxSlide + 20"
+        [style]="{ width: maxSlide }"
+        position="absolute"
+        [absolutePosition]="{
+          x: logoContainer.getBoundingClientRect().width + 8,
+          y: 8
+        }"
+        (distanceTraveled)="handleDistanceTraveled($event)"
+        [debug]="true"
+      ></ufw-l-pull-tab>
+      <!-- <div
         class="tab h-full w-5"
         #tab
         ufwLDragging
         [min]="minSlide - 4"
         [max]="maxSlide + 20"
-        [style]="{ width: maxSlide + 20 }"
+        [style]="{ width: maxSlide }"
         position="absolute"
         [absolutePosition]="{
-          x: logoContainer.getBoundingClientRect().width - 10,
+          x: logoContainer.getBoundingClientRect().width + 8,
           y: 8
         }"
         (distanceTraveled)="handleDistanceTraveled($event)"
       >
         <div class="inner-tab h-full"></div>
-      </div>
+      </div> -->
     </div>
   `,
   styleUrls: ['./ufw-logo.component.scss'],
+  imports: [CommonModule, DraggingDirective, PullTabComponent],
 })
 export class UfwLogoComponent implements AfterViewInit {
   private hiddenTextElements: HTMLElement[] = [];
@@ -93,7 +95,7 @@ export class UfwLogoComponent implements AfterViewInit {
     this.maxSlide = this.minSlide + this.maxTravel;
   }
   @HostBinding('class') get classes() {
-    return `w-11/12  mx-auto`;
+    return ` mx-auto`;
   }
 
   handleDistanceTraveled(amount: number) {
