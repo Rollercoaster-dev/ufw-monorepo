@@ -11,7 +11,7 @@
   position: relative;
   transition: all 300ms;
 
-  @apply w-[310px] md:w-[670px];
+  @apply w-[310px] md:w-[700px] lg:w-[800px] xl:w-[1100px];
   .logo-container {
     padding-left: 4px;
     .U,
@@ -26,7 +26,7 @@
       transition: width 300ms;
       line-height: 1.5 !important;
 
-      @apply xl:text-7xl lg:text-6xl md:text-6xl text-2xl font-bold;
+      @apply xl:text-8xl lg:text-7xl md:text-6xl text-2xl font-bold;
     }
 
     &.clicked {
