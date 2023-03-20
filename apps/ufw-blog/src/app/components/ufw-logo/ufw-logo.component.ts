@@ -4,7 +4,6 @@ import {
   NgZone,
   ViewChild,
   AfterViewInit,
-  ChangeDetectorRef,
   HostBinding,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,22 +36,6 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
         (distanceTraveled)="handleDistanceTraveled($event)"
         [debug]="true"
       ></ufw-l-pull-tab>
-      <!-- <div
-        class="tab h-full w-5"
-        #tab
-        ufwLDragging
-        [min]="minSlide - 4"
-        [max]="maxSlide + 20"
-        [style]="{ width: maxSlide }"
-        position="absolute"
-        [absolutePosition]="{
-          x: logoContainer.getBoundingClientRect().width + 8,
-          y: 8
-        }"
-        (distanceTraveled)="handleDistanceTraveled($event)"
-      >
-        <div class="inner-tab h-full"></div>
-      </div> -->
     </div>
   `,
   styleUrls: ['./ufw-logo.component.scss'],

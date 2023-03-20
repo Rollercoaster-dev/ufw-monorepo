@@ -24,6 +24,15 @@ $violent: #4841a1;
 $skylark: #66ccf2;
 $dust: #253a4c;
 
+// UFW colors
+$light-1: #fff7c3;
+$light-2: #e4cc76;
+$light-3: #dfca85;
+$grey-1: #7c7c8c;
+$grey-1: #444854;
+$grey-1: #37363f;
+$dark-1: #0f1323;
+
 $colors-list: (
   magenta: $magenta,
   pink: $pink,
@@ -43,10 +52,10 @@ $colors-list: (
 );
 
 @each $key, $value in $colors-list {
-  .bg-#{"" + $key} {
+  .bg-#{'' + $key} {
     background-color: $value;
   }
-  .text-#{"" + $key} {
+  .text-#{'' + $key} {
     color: $value;
   }
 }
