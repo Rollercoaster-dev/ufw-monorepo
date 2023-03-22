@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DraggingDirective } from '../../dragging/dragging.directive';
 
@@ -21,6 +27,7 @@ import { DraggingDirective } from '../../dragging/dragging.directive';
     </div>
   `,
   styleUrls: ['./pull-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PullTabComponent {
   @Input() direction: 'left' | 'right' | 'up' | 'down' = 'left';
