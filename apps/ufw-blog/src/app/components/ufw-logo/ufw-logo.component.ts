@@ -5,6 +5,8 @@ import {
   ViewChild,
   AfterViewInit,
   HostBinding,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DraggingDirective } from '../../dragging/dragging.directive';
@@ -39,6 +41,7 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
     </div>
   `,
   styleUrls: ['./ufw-logo.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, DraggingDirective, PullTabComponent],
 })
 export class UfwLogoComponent implements AfterViewInit {
@@ -49,18 +52,12 @@ export class UfwLogoComponent implements AfterViewInit {
   maxTravel = 0;
   minSlide = 0;
   maxSlide = 0;
-  #elementIndex = 0;
-  set elementIndex(value: number) {
-    this.#elementIndex = value;
-  }
-  get elementIndex() {
-    return this.#elementIndex;
-  }
+  elementIndex = 0;
 
   @ViewChild('tab') tab: ElementRef | undefined;
   @ViewChild('logoContainer') logoContainer: ElementRef | undefined;
 
-  constructor(private zone: NgZone) {}
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
   ngAfterViewInit() {
     if (!this.logoContainer) return;
 

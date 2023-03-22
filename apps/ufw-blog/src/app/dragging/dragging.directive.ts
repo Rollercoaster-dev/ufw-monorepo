@@ -9,6 +9,7 @@ import {
   NgZone,
   Output,
 } from '@angular/core';
+import { debounceTime, Subject } from 'rxjs';
 
 @Directive({
   selector: '[ufwLDragging]',
@@ -40,7 +41,13 @@ export class DraggingDirective implements AfterViewInit {
     return this.lockToPosition ? axis + this.max : this.max;
   }
 
-  constructor(private elRef: ElementRef, private zone: NgZone) {}
+  private debouncedMove$ = new Subject<MouseEvent | TouchEvent>();
+
+  constructor(private elRef: ElementRef, private zone: NgZone) {
+    this.debouncedMove$
+      .pipe(debounceTime(10))
+      .subscribe((event) => this.performDrag(event));
+  }
 
   @Output() distanceTraveled = new EventEmitter<number>();
 
@@ -76,33 +83,37 @@ export class DraggingDirective implements AfterViewInit {
   onMouseMove(event: MouseEvent | TouchEvent) {
     if (this.#dragging) {
       event.preventDefault();
-      const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
-
-      this.zone.runOutsideAngular(() => {
-        const dx = touch.clientX - this.#initialPosition.x;
-        const dy = touch.clientY - this.#initialPosition.y;
-
-        let distanceTraveled = 0;
-
-        if (this.axis === 'x') {
-          const newX = Math.max(
-            Math.min(this.#initialPosition.x + dx, this.maxValue),
-            this.minValue
-          );
-          distanceTraveled = newX - this.#initialPosition.x;
-          this.elRef.nativeElement.style.transform = `translateX(${distanceTraveled}px)`;
-          this.distanceTraveled.emit(distanceTraveled);
-        } else if (this.axis === 'y') {
-          const newY = Math.max(
-            Math.min(this.#initialPosition.y + dy, this.maxValue),
-            this.minValue
-          );
-          distanceTraveled = newY - this.#initialPosition.y;
-          this.elRef.nativeElement.style.transform = `translateY(${distanceTraveled}px)`;
-          this.distanceTraveled.emit(distanceTraveled);
-        }
-      });
+      this.debouncedMove$.next(event);
     }
+  }
+
+  performDrag(event: MouseEvent | TouchEvent) {
+    const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
+
+    this.zone.runOutsideAngular(() => {
+      const dx = touch.clientX - this.#initialPosition.x;
+      const dy = touch.clientY - this.#initialPosition.y;
+
+      let distanceTraveled = 0;
+
+      if (this.axis === 'x') {
+        const newX = Math.max(
+          Math.min(this.#initialPosition.x + dx, this.maxValue),
+          this.minValue
+        );
+        distanceTraveled = newX - this.#initialPosition.x;
+        this.elRef.nativeElement.style.transform = `translateX(${distanceTraveled}px)`;
+        this.distanceTraveled.emit(distanceTraveled);
+      } else if (this.axis === 'y') {
+        const newY = Math.max(
+          Math.min(this.#initialPosition.y + dy, this.maxValue),
+          this.minValue
+        );
+        distanceTraveled = newY - this.#initialPosition.y;
+        this.elRef.nativeElement.style.transform = `translateY(${distanceTraveled}px)`;
+        this.distanceTraveled.emit(distanceTraveled);
+      }
+    });
   }
 
   @HostListener('document:mouseup', ['$event'])
