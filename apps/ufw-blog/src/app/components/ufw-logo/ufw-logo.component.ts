@@ -19,11 +19,11 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
     <div class="flex m-auto">
       <div class="logo-container flex items-center select-none" #logoContainer>
         <div class="U ">u</div>
-        <div class="Utterly hidden-text ">tterly</div>
+        <div class="Utterly hidden-text  shadow-inner-1">tterly</div>
         <div class="F ">f</div>
-        <div class="Fucking hidden-text">ucking</div>
+        <div class="Fucking hidden-text shadow-inner-1">ucking</div>
         <div class="W ">w</div>
-        <div class="Wonderful hidden-text">onderful</div>
+        <div class="Wonderful hidden-text shadow-inner-1">onderful</div>
       </div>
       <ufw-l-pull-tab
         #tab
@@ -33,7 +33,7 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
         position="absolute"
         [absolutePosition]="{
           x: logoContainer.getBoundingClientRect().width + 8,
-          y: 8
+          y: 0
         }"
         (distanceTraveled)="handleDistanceTraveled($event)"
       ></ufw-l-pull-tab>
@@ -74,7 +74,7 @@ export class UfwLogoComponent implements AfterViewInit {
     this.maxSlide = this.minSlide + this.maxTravel;
   }
   @HostBinding('class') get classes() {
-    return ` mx-auto`;
+    return `shadow-inner-1 mx-auto`;
   }
 
   handleDistanceTraveled(amount: number) {
