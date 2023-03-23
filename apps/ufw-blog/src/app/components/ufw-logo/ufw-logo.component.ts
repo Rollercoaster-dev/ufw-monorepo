@@ -36,7 +36,6 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
           y: 8
         }"
         (distanceTraveled)="handleDistanceTraveled($event)"
-        [debug]="true"
       ></ufw-l-pull-tab>
     </div>
   `,

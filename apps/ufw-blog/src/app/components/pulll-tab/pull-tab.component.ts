@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -39,8 +40,11 @@ export class PullTabComponent {
 
   @Output() distanceTraveled = new EventEmitter<number>();
 
+  constructor(private cd: ChangeDetectorRef) {}
+
   handleDistanceTraveled(distance: number) {
     this.distanceTraveled.emit(distance);
     if (this.debug) console.log('distanceTraveled', distance);
+    this.cd.detectChanges();
   }
 }

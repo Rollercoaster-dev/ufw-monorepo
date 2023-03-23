@@ -4,22 +4,22 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   NgZone,
   Output,
 } from '@angular/core';
+import { debounceTime, Subject, takeWhile } from 'rxjs';
 
 @Directive({
   selector: '[ufwLDragging]',
   standalone: true,
 })
 export class DraggingDirective implements AfterViewInit {
-  #initialX = 0;
-  #initialY = 0;
   #initialPosition = { x: 0, y: 0 };
-
+  #initialMousePosition = { x: 0, y: 0 };
   #dragging = false;
+  #initialOffset = { x: 0, y: 0 };
+  #animationFrameId: number | null = null;
 
   @Input() axis: 'x' | 'y' = 'x'; // specify the axis along which the element can be dragged
 
@@ -52,63 +52,68 @@ export class DraggingDirective implements AfterViewInit {
       this.elRef.nativeElement.style.left = `${this.absolutePosition.x}px`;
       this.elRef.nativeElement.style.top = `${this.absolutePosition.y}px`;
     }
+    // Add passive event listeners
+    document.addEventListener('mousemove', this.onMouseMove.bind(this), {
+      passive: true,
+    });
+    document.addEventListener('touchmove', this.onMouseMove.bind(this), {
+      passive: true,
+    });
   }
 
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
   onMouseDown(event: MouseEvent | TouchEvent) {
-    const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
     this.#dragging = true;
 
-    this.#initialX = touch.clientX;
-    this.#initialY = touch.clientY;
+    const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
+    const clientAxis = this.axis === 'x' ? touch.clientX : touch.clientY;
 
     // Store the initial position of the element
     this.#initialPosition = {
       x: this.elRef.nativeElement.offsetLeft,
       y: this.elRef.nativeElement.offsetTop,
     };
+    // Calculate the initial mouse/touch position
+    this.#initialMousePosition = {
+      x: clientAxis - this.#initialPosition.x,
+      y: clientAxis - this.#initialPosition.y,
+    };
+
     this.dragging.emit(true);
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  @HostListener('document:touchmove', ['$event'])
   onMouseMove(event: MouseEvent | TouchEvent) {
-    if (this.#dragging) {
-      event.preventDefault();
-      const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
-
-      this.zone.runOutsideAngular(() => {
-        const dx = touch.clientX - this.#initialPosition.x;
-        const dy = touch.clientY - this.#initialPosition.y;
-
-        let distanceTraveled = 0;
-
-        if (this.axis === 'x') {
-          const newX = Math.max(
-            Math.min(this.#initialPosition.x + dx, this.maxValue),
-            this.minValue
-          );
-          distanceTraveled = newX - this.#initialPosition.x;
-          this.elRef.nativeElement.style.transform = `translateX(${distanceTraveled}px)`;
-          this.distanceTraveled.emit(distanceTraveled);
-        } else if (this.axis === 'y') {
-          const newY = Math.max(
-            Math.min(this.#initialPosition.y + dy, this.maxValue),
-            this.minValue
-          );
-          distanceTraveled = newY - this.#initialPosition.y;
-          this.elRef.nativeElement.style.transform = `translateY(${distanceTraveled}px)`;
-          this.distanceTraveled.emit(distanceTraveled);
-        }
-      });
+    if (!this.#dragging) {
+      return;
     }
+
+    // event.preventDefault();
+    const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
+
+    this.zone.runOutsideAngular(() => {
+      const clientAxis = this.axis === 'x' ? touch.clientX : touch.clientY;
+      const distance = clientAxis - this.#initialMousePosition[this.axis];
+      const newValue = Math.max(
+        Math.min(this.#initialPosition[this.axis] + distance, this.maxValue),
+        this.minValue
+      );
+      const distanceTraveled = newValue - this.#initialPosition[this.axis];
+      this.elRef.nativeElement.style.transform =
+        this.axis === 'x'
+          ? `translateX(${distanceTraveled}px)`
+          : `translateY(${distanceTraveled}px)`;
+      this.distanceTraveled.emit(distanceTraveled);
+    });
   }
 
   @HostListener('document:mouseup', ['$event'])
   @HostListener('document:touchend', ['$event'])
-  onMouseUp(event: MouseEvent | TouchEvent) {
+  onMouseUp() {
     this.#dragging = false;
     this.dragging.emit(false);
+
+    document.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    document.removeEventListener('touchmove', this.onMouseMove.bind(this));
   }
 }
