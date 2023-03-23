@@ -2,7 +2,7 @@
 [build]
   command = "nx build ufw-blog"
   functions = "netlify/functions"
-  base = "/apps/ufw-blog"
+  base = "."
   publish = "/dist/apps/ufw-blog"
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
