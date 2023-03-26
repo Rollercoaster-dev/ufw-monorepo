@@ -29,7 +29,23 @@
       );
       position: absolute;
       left: -5px;
-      border-radius: 0 5px 5px 0;
+    }
+  }
+  &.ufw-down {
+    > .tab {
+      .inner-tab {
+        border-radius: 0;
+        border-left: none;
+        border-top: solid 1px #e7e5e5;
+        background: linear-gradient(
+          1800deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 1) 40%,
+
+          rgba(238, 238, 238, 1) 100%
+        );
+        border-radius: 0px 0px 0px 0px;
+      }
     }
   }
 }

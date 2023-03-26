@@ -3,20 +3,22 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DraggingDirective } from '../../dragging/dragging.directive';
-
+import { Tailwindest } from 'tailwindest';
 @Component({
   selector: 'ufw-l-pull-tab',
   standalone: true,
   imports: [CommonModule, DraggingDirective],
   template: `
     <div
-      class="tab h-full w-5"
+      class="tab {{ height }} {{ width }}"
       ufwLDragging
+      [axis]="axis"
       [min]="min"
       [max]="max"
       [style]="{ width: max }"
@@ -24,7 +26,7 @@ import { DraggingDirective } from '../../dragging/dragging.directive';
       [position]="position"
       [absolutePosition]="absolutePosition"
     >
-      <div class="inner-tab h-full {{ direction }}"></div>
+      <div class="inner-tab h-full w-full{{ direction }}"></div>
     </div>
   `,
   styleUrls: ['./pull-tab.component.scss'],
@@ -34,6 +36,8 @@ export class PullTabComponent {
   @Input() direction: 'left' | 'right' | 'up' | 'down' = 'left';
   @Input() min = 0;
   @Input() max = Infinity;
+  @Input() height: Tailwindest['height'] = 'h-full';
+  @Input() width: Tailwindest['width'] = 'w-5';
   @Input() position: 'absolute' | 'relative' = 'relative';
   @Input() absolutePosition: { x: number; y: number } = { x: 0, y: 0 };
   @Input() debug = false;
@@ -41,6 +45,14 @@ export class PullTabComponent {
   @Output() distanceTraveled = new EventEmitter<number>();
 
   constructor(private cd: ChangeDetectorRef) {}
+
+  get axis() {
+    return this.direction === 'left' || this.direction === 'right' ? 'x' : 'y';
+  }
+
+  @HostBinding('class') get class() {
+    return `ufw-pull-tab ufw-${this.direction}`;
+  }
 
   handleDistanceTraveled(distance: number) {
     this.distanceTraveled.emit(distance);

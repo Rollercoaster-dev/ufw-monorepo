@@ -74,11 +74,11 @@ describe('DraggingDirective', () => {
       new MouseEvent('mousedown', { clientX: 100, clientY: 100 })
     );
     document.dispatchEvent(
-      new MouseEvent('mousemove', { clientX: 100, clientY: 200 })
+      new MouseEvent('mousemove', { clientX: 100, clientY: 600 })
     );
     document.dispatchEvent(new MouseEvent('mouseup'));
 
-    expect(distanceTraveled).toBe(100);
+    expect(distanceTraveled).toBe(500);
   });
 
   it('should respect min and max values', () => {

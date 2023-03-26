@@ -1,7 +1,15 @@
 $shadow-inner-1: inset 1px 1px 2px 1px rgba(0, 0, 0, 0.4);
+$shadow-1: 1px 1px 4px 2px rgba(0, 0, 0, 0.4);
+$shadow-inner-mobile-1: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.4);
 // 0px 0px 0px 8px #daddda, 5px 5px 15px 5px rgba(0, 0, 0, 0);
 // $sh0px 0px 0px 16px #4b4c4b, 0px 0px 0px 24px #828482,
 // 0px 0px 0px 31px #b2b5b2,
 .shadow-inner-1 {
   box-shadow: $shadow-inner-1;
+  @media screen and (max-width: 640px) {
+    box-shadow: $shadow-inner-mobile-1;
+  }
+}
+.shadow--1 {
+  box-shadow: $shadow-1;
 }

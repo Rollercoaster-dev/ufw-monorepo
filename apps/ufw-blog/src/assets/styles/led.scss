@@ -1,0 +1,6 @@
+@import './colors.scss';
+// classes for the LED display
+.led {
+  color: $light-1;
+  text-shadow: 0 0 4px $light-2;
+}
