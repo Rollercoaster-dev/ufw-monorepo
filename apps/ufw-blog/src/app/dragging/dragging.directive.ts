@@ -8,7 +8,6 @@ import {
   NgZone,
   Output,
 } from '@angular/core';
-import { debounceTime, Subject, takeWhile } from 'rxjs';
 
 @Directive({
   selector: '[ufwLDragging]',
@@ -18,8 +17,6 @@ export class DraggingDirective implements AfterViewInit {
   #initialPosition = { x: 0, y: 0 };
   #initialMousePosition = { x: 0, y: 0 };
   #dragging = false;
-  #initialOffset = { x: 0, y: 0 };
-  #animationFrameId: number | null = null;
 
   @Input() axis: 'x' | 'y' = 'x'; // specify the axis along which the element can be dragged
 
@@ -67,8 +64,9 @@ export class DraggingDirective implements AfterViewInit {
     this.#dragging = true;
 
     const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
-    const clientAxis = this.axis === 'x' ? touch.clientX : touch.clientY;
 
+    const clientX = touch.clientX;
+    const clientY = touch.clientY;
     // Store the initial position of the element
     this.#initialPosition = {
       x: this.elRef.nativeElement.offsetLeft,
@@ -76,8 +74,8 @@ export class DraggingDirective implements AfterViewInit {
     };
     // Calculate the initial mouse/touch position
     this.#initialMousePosition = {
-      x: clientAxis - this.#initialPosition.x,
-      y: clientAxis - this.#initialPosition.y,
+      x: clientX,
+      y: clientY,
     };
 
     this.dragging.emit(true);

@@ -19,9 +19,9 @@ import { Tailwindest } from 'tailwindest';
       class="tab {{ height }} {{ width }}"
       ufwLDragging
       [axis]="axis"
+      [style]="{ width: max }"
       [min]="min"
       [max]="max"
-      [style]="{ width: max }"
       (distanceTraveled)="handleDistanceTraveled($event)"
       [position]="position"
       [absolutePosition]="absolutePosition"
@@ -56,7 +56,8 @@ export class PullTabComponent {
 
   handleDistanceTraveled(distance: number) {
     this.distanceTraveled.emit(distance);
-    if (this.debug) console.log('distanceTraveled', distance);
+    if (this.debug)
+      console.log('distanceTraveled', { distance, axis: this.axis });
     this.cd.detectChanges();
   }
 }
