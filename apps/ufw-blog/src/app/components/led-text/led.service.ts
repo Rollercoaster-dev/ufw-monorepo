@@ -16,12 +16,29 @@ const initialState: LedState = {};
 @Injectable({
   providedIn: 'root',
 })
-export class LedTextService {
+export class LedService {
   private leds = new BehaviorSubject<LedState>(initialState);
   leds$ = this.leds.asObservable();
 
-  addLed(newLed: Led) {
-    this.leds.next({ ...this.leds.value, [newLed.id]: newLed });
+  generateId() {
+    return Math.random().toString(36).substring(2);
+  }
+
+  createNewLed(id: string): Led {
+    return {
+      id,
+      isOn: false,
+      brightness: 0,
+    };
+  }
+
+  addLed(newLedId: string) {
+    if (!this.leds.value[newLedId]) {
+      this.leds.next({
+        ...this.leds.value,
+        [newLedId]: this.createNewLed(newLedId),
+      });
+    }
   }
 
   removeLed(ledId: string) {
@@ -35,6 +52,13 @@ export class LedTextService {
 
   setLed(ledId: string, newLed: Led) {
     this.leds.next({ ...this.leds.value, [ledId]: newLed });
+  }
+
+  setLedState(ledId: string, isOn: boolean) {
+    const led = this.getLed(ledId);
+    if (led) {
+      this.setLed(ledId, { ...led, isOn });
+    }
   }
 
   toggleLed(ledId: string) {

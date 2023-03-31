@@ -1,3 +1,17 @@
+@import '../../../assets/styles/colors.scss';
 :host {
   display: block;
+
+  .led {
+    opacity: 0;
+    transition: opacity 1s ease-in-out,
+      text-shadow 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+  .glow {
+    text-shadow: 0 0 4px $ufw-light-1, 0 0 8px $ufw-light-2,
+      0 0 16px $ufw-light-3;
+  }
+  .show {
+    opacity: 1;
+  }
 }

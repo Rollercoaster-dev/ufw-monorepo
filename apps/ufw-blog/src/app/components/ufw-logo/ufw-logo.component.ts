@@ -25,18 +25,25 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
         <div class="W ">w</div>
         <div class="Wonderful hidden-text shadow-inner-1">onderful</div>
       </div>
-      <ufw-l-pull-tab
-        #tab
-        [min]="minSlide - 4"
-        [max]="maxSlide + 20"
-        [style]="{ width: maxSlide }"
-        position="absolute"
-        [absolutePosition]="{
-          x: logoContainer.getBoundingClientRect().width + 8,
-          y: 0
-        }"
-        (distanceTraveled)="handleDistanceTraveled($event)"
-      ></ufw-l-pull-tab>
+      <div
+        class="my-auto shadow--1 w-2 h-7 md:w-4 md:h-20 lg:h-24 xl:w-6 xl:h-[132px] "
+      >
+        <ufw-l-pull-tab
+          #tab
+          class="opacity-0"
+          [min]="minSlide - 4"
+          [max]="maxSlide + 20"
+          [style]="{ width: maxSlide }"
+          [returnHomeDelay]="5000"
+          [returnHomeDuration]="1000"
+          position="absolute"
+          [absolutePosition]="{
+            x: logoContainer.getBoundingClientRect().width + 8,
+            y: 0
+          }"
+          (distanceTraveled)="handleDistanceTraveled($event)"
+        ></ufw-l-pull-tab>
+      </div>
     </div>
   `,
   styleUrls: ['./ufw-logo.component.scss'],
@@ -51,6 +58,7 @@ export class UfwLogoComponent implements AfterViewInit {
   maxTravel = 0;
   minSlide = 0;
   maxSlide = 0;
+  height = 0;
   elementIndex = 0;
 
   @ViewChild('tab') tab: ElementRef | undefined;
@@ -71,6 +79,8 @@ export class UfwLogoComponent implements AfterViewInit {
     this.maxTravel = this.letterWidths.reduce((a, b) => a + b, 0);
     this.minSlide =
       this.logoContainer.nativeElement.getBoundingClientRect().width;
+    this.height =
+      this.logoContainer.nativeElement.getBoundingClientRect().height;
     this.maxSlide = this.minSlide + this.maxTravel;
   }
   @HostBinding('class') get classes() {

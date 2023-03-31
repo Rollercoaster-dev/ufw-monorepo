@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Led, LedTextService } from './led-text.service';
+import { Led, LedService } from './led.service';
 
 describe('LedTextService', () => {
-  let service: LedTextService;
+  let service: LedService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LedTextService);
+    service = TestBed.inject(LedService);
   });
 
   it('should be created', () => {
