@@ -152,6 +152,10 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
 
     this.zone.runOutsideAngular(() => {
       const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
+      const { clientY, pageY } = touch;
+      if (clientY > pageY) {
+        event.preventDefault();
+      }
       const clientAxis = this.axis === 'x' ? touch.clientX : touch.clientY;
       const distance =
         this.axis === 'y'
