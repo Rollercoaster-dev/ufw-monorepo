@@ -4,6 +4,7 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  HostBinding,
   HostListener,
   Input,
   NgZone,
@@ -63,6 +64,10 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
   @Output() dragEnd = new EventEmitter<void>();
   @Output() returningHome = new EventEmitter<void>();
   @Output() arrivedHome = new EventEmitter<void>();
+
+  @HostBinding('class.dragging') get draggingClass() {
+    return this.#dragging;
+  }
 
   ngAfterViewInit() {
     this.elRef.nativeElement.style.position = this.position;
@@ -177,7 +182,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
     this.dragEnd.emit();
 
     timer(this.returnHomeDelay).subscribe(() => {
-      if (this.returnHomeDuration) {
+      if (this.returnHomeDuration && !this.#dragging) {
         this.returnToHome(this.returnHomeDuration);
       }
     });

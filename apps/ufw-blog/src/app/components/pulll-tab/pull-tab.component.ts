@@ -17,7 +17,7 @@ import { Tailwindest } from 'tailwindest';
   imports: [CommonModule, DraggingDirective],
   template: `
     <div
-      class="tab"
+      class="tab {{ direction }} "
       [ngClass]="classes"
       ufwLDragging
       [style]="style"
