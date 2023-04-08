@@ -9,20 +9,23 @@ import {
   Output,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DraggingDirective } from '../../dragging/dragging.directive';
+
 import { Tailwindest } from 'tailwindest';
+import { DraggingDirective } from '../../directives/dragging/dragging.directive';
+import { DraggingState } from '../../directives/dragging/draggingstate';
+
 @Component({
   selector: 'ufw-l-pull-tab',
   standalone: true,
   imports: [CommonModule, DraggingDirective],
   template: `
     <div
-      class="tab {{ direction }} "
+      class="tab {{ direction }} {{ width }} {{ height }}"
       [ngClass]="classes"
       ufwLDragging
+      [dragId]="dragId"
       [style]="style"
       [axis]="axis"
-      [style]="{ width: max }"
       [min]="min"
       [max]="max"
       [position]="position"
@@ -43,6 +46,7 @@ import { Tailwindest } from 'tailwindest';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PullTabComponent {
+  @Input() dragId!: string;
   @Input() direction: 'left' | 'right' | 'up' | 'down' = 'left';
   @Input() min = 0;
   @Input() max = Infinity;
@@ -51,8 +55,10 @@ export class PullTabComponent {
   @Input() position: 'absolute' | 'relative' = 'relative';
   @Input() absolutePosition: { x: number; y: number } = { x: 0, y: 0 };
   @Input() debug = false;
-  @Input() returnHomeDuration?: number;
+  @Input() returnHomeDuration = 0;
   @Input() returnHomeDelay = 0;
+  @Input() allowReturnHome = true;
+  @Input() debounce = 0;
 
   @Output() distanceTraveled = new EventEmitter<number>();
   @Output() dragStart = new EventEmitter<void>();
@@ -60,6 +66,8 @@ export class PullTabComponent {
   @Output() dragEnd = new EventEmitter<void>();
   @Output() returningHome = new EventEmitter<void>();
   @Output() arrivedHome = new EventEmitter<void>();
+
+  #state?: DraggingState;
 
   constructor(
     private cd: ChangeDetectorRef,

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Directive,
@@ -8,8 +7,10 @@ import {
   HostListener,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 
 import {
@@ -20,26 +21,56 @@ import {
   takeUntil,
   timer,
 } from 'rxjs';
+import { DraggingState } from './draggingstate';
+import { DraggableStateManager } from './draggingStateManager.service';
 
 @Directive({
   selector: '[ufwLDragging]',
   standalone: true,
 })
-export class DraggingDirective implements AfterViewInit, OnDestroy {
-  #initialPosition = { x: 0, y: 0 };
-  #initialMousePosition = { x: 0, y: 0 };
-  #dragging = false;
-  #distanceTraveled = 0;
+export class DraggingDirective implements AfterViewInit, OnChanges, OnDestroy {
+  constructor(
+    private elRef: ElementRef,
+    private zone: NgZone,
+    private stateManager: DraggableStateManager
+  ) {}
 
-  @Input() axis: 'x' | 'y' = 'x'; // specify the axis along which the element can be dragged
+  #initialPosition: { x: number; y: number } = { x: 0, y: 0 };
+  #initialMousePosition: { x: number; y: number } = { x: 0, y: 0 };
 
+  @Input()
+  set dragId(value: string | null) {
+    this.#state.dragId = value;
+  }
+  get dragId() {
+    if (this.#state.dragId) {
+      return this.#state.dragId;
+    }
+    return null;
+  }
+  @Input() axis: 'x' | 'y' = 'x'; // specify the axis the element can be dragged on
   @Input() min = 0; // specify the maximum distance the element can be dragged
-  @Input() max = Infinity; // specify the maximum distance the element can be dragged
-  @Input() lockToPosition = false; // specify whether the element should be locked to the position it was dragged to
+  @Input() // specify the maximum distance the element can be dragged
+  set max(value: number) {
+    this.#state.max = value;
+  }
+  get max() {
+    return this.#state.max;
+  }
+  @Input() lockToPosition = false;
   @Input() position: 'relative' | 'absolute' = 'relative';
   @Input() absolutePosition: { x: number; y: number } = { x: 0, y: 0 };
-  @Input() returnHomeDuration?: number;
+  @Input() returnHomeDuration = 1000;
   @Input() returnHomeDelay = 0;
+  @Input()
+  set allowReturnHome(value: boolean) {
+    this.#state.allowReturnHome = value;
+  }
+  get allowReturnHome() {
+    return this.#state.allowReturnHome;
+  }
+  @Input() debounce = 0;
+  #state = new DraggingState();
 
   private destroy$ = new Subject<void>();
 
@@ -55,10 +86,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
       : this.max;
   }
 
-  constructor(private elRef: ElementRef, private zone: NgZone) {}
-
   @Output() distanceTraveled = new EventEmitter<number>();
-
   @Output() dragging = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter<void>();
   @Output() dragEnd = new EventEmitter<void>();
@@ -66,7 +94,17 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
   @Output() arrivedHome = new EventEmitter<void>();
 
   @HostBinding('class.dragging') get draggingClass() {
-    return this.#dragging;
+    return this.#state.dragging;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.dragId && this.stateManager.hasDraggingInstance(this.dragId)) {
+      this.stateManager.setDraggingInstance(this.dragId, this.#state);
+    } else {
+      if (this.dragId) {
+        this.stateManager.createDraggingInstance(this.dragId, this.#state);
+      }
+    }
   }
 
   ngAfterViewInit() {
@@ -83,7 +121,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
     // Apply the debounceTime operator to debounce the events
     move$
       .pipe(
-        debounceTime(8), // Adjust the debounce time as needed
+        debounceTime(this.debounce), // Adjust the debounce time as needed
         takeUntil(this.destroy$) // Unsubscribe when the component is destroyed
       )
       .subscribe((event: MouseEvent | TouchEvent) => {
@@ -91,8 +129,11 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
       });
   }
   returnToHome(duration: number) {
+    if (!this.allowReturnHome) {
+      return;
+    }
     const startTime = performance.now();
-    const startDistance = this.#distanceTraveled;
+    const startDistance = this.#state.distanceTraveled;
 
     const animate = (currentTime: number) => {
       const elapsedTime = currentTime - startTime;
@@ -105,7 +146,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
           : `translateY(${distanceToMove}px)`;
 
       this.distanceTraveled.emit(distanceToMove);
-      this.#distanceTraveled = distanceToMove;
+      this.#state.distanceTraveled = distanceToMove;
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -113,7 +154,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
         // Ensure we reach the home position
         this.elRef.nativeElement.style.transform = 'translate(0, 0)';
         this.distanceTraveled.emit(0);
-        this.#distanceTraveled = 0;
+        this.#state.distanceTraveled = 0;
       }
     };
 
@@ -123,7 +164,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
   @HostListener('mousedown', ['$event'])
   @HostListener('touchstart', ['$event'])
   onMouseDown(event: MouseEvent | TouchEvent) {
-    this.#dragging = true;
+    this.#state.dragging = true;
 
     const touch = (event as TouchEvent).touches?.[0] || (event as MouseEvent);
 
@@ -146,7 +187,7 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
   }
 
   onMouseMove(event: MouseEvent | TouchEvent) {
-    if (!this.#dragging) {
+    if (!this.#state.dragging) {
       return;
     }
 
@@ -171,22 +212,22 @@ export class DraggingDirective implements AfterViewInit, OnDestroy {
           ? `translateX(${distanceTraveled}px)`
           : `translateY(${distanceTraveled}px)`;
       this.distanceTraveled.emit(distanceTraveled);
-      this.#distanceTraveled = distanceTraveled;
+      this.#state.distanceTraveled = distanceTraveled;
     });
   }
 
   @HostListener('document:mouseup', ['$event'])
   @HostListener('document:touchend', ['$event'])
   onMouseUp(event: MouseEvent | TouchEvent) {
-    if (!this.#dragging) {
+    if (!this.#state.dragging) {
       return;
     }
-    this.#dragging = false;
+    this.#state.dragging = false;
     this.dragging.emit(false);
     this.dragEnd.emit();
 
     timer(this.returnHomeDelay).subscribe(() => {
-      if (this.returnHomeDuration && !this.#dragging) {
+      if (this.returnHomeDuration && !this.#state.dragging) {
         this.returnToHome(this.returnHomeDuration);
       }
     });

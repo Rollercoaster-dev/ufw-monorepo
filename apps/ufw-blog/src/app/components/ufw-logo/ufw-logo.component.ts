@@ -6,11 +6,11 @@ import {
   AfterViewInit,
   HostBinding,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DraggingDirective } from '../../dragging/dragging.directive';
 import { PullTabComponent } from '../pulll-tab/pull-tab.component';
+import { DraggingDirective } from '../../directives/dragging/dragging.directive';
+import { DraggingState } from '../../directives/dragging/draggingstate';
 
 @Component({
   selector: 'ufw-l-logo',
@@ -31,9 +31,10 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
         <ufw-l-pull-tab
           #tab
           class="opacity-0"
+          [dragId]="dragId"
+          [debounce]="8"
           [min]="minSlide - 4"
-          [max]="maxSlide + 20"
-          [style]="{ width: maxSlide }"
+          [max]="(maxSlide || 600) + 20"
           [returnHomeDelay]="5000"
           [returnHomeDuration]="1000"
           position="absolute"
@@ -51,6 +52,9 @@ import { PullTabComponent } from '../pulll-tab/pull-tab.component';
   imports: [CommonModule, DraggingDirective, PullTabComponent],
 })
 export class UfwLogoComponent implements AfterViewInit {
+  dragId = 'logo';
+
+  #pullState?: DraggingState;
   private hiddenTextElements: HTMLElement[] = [];
   private letterWidths = [0, 0, 0];
 
@@ -64,7 +68,7 @@ export class UfwLogoComponent implements AfterViewInit {
   @ViewChild('tab') tab: ElementRef | undefined;
   @ViewChild('logoContainer') logoContainer: ElementRef | undefined;
 
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {}
+  constructor(private zone: NgZone) {}
   ngAfterViewInit() {
     if (!this.logoContainer) return;
 
