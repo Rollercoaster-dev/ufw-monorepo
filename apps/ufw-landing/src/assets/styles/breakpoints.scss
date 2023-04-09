@@ -15,12 +15,12 @@ $breakpoints: (
 @mixin breakpoint($breakpoint, $direction) {
   // If the key exists in the map
   @if map-has-key($breakpoints, $breakpoint) {
-    @if $direction == "down" {
+    @if $direction == 'down' {
       @media (max-width: map-get($breakpoints, $breakpoint)) {
         @content;
       }
     }
-    @if $direction == "up" {
+    @if $direction == 'up' {
       @media (min-width: map-get($breakpoints, $breakpoint)) {
         @content;
       }

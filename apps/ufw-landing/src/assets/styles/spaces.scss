@@ -43,18 +43,18 @@ $space-xxxlarge: 8rem !default;
 $space-component: $space-xlarge;
 $space-component-header: $space-large;
 $space-list: (
-  "none": $space-none,
-  "inline-block": $space-inline-block,
-  "tiny": $space-tiny,
-  "smaller": $space-smaller,
-  "small": $space-small,
-  "default": $space-default,
-  "medium": $space-medium,
-  "xmedium": $space-xmedium,
-  "large": $space-large,
-  "xlarge": $space-xlarge,
-  "xxlarge": $space-xxlarge,
-  "xxxlarge": $space-xxxlarge
+  'none': $space-none,
+  'inline-block': $space-inline-block,
+  'tiny': $space-tiny,
+  'smaller': $space-smaller,
+  'small': $space-small,
+  'default': $space-default,
+  'medium': $space-medium,
+  'xmedium': $space-xmedium,
+  'large': $space-large,
+  'xlarge': $space-xlarge,
+  'xxlarge': $space-xxlarge,
+  'xxxlarge': $space-xxxlarge,
 );
 .w-100 {
   width: 100%;
@@ -66,7 +66,7 @@ $space-list: (
   justify-content: space-between;
 }
 :export {
-  spaceList: {
+  spacelist: {
     none: $space-none;
     inlinelock: $space-inline-block;
     tiny: $space-tiny;

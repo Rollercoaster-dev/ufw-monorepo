@@ -1,9 +1,9 @@
 # example netlify.toml
 [build]
-  command = "nx build ufw-blog"
-  functions = "apps/ufw-blog/netlify/functions"
+  command = "nx build ufw-landing"
+  functions = "apps/ufw-landing/netlify/functions"
   base = "."
-  publish = "dist/apps/ufw-blog"
+  publish = "dist/apps/ufw-landing"
 
 [[redirects]]
   from = "/*"

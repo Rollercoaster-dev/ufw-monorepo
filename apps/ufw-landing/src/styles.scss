@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* You can add global styles to this file, and also import other style files */
 
-@import "./assets/styles/index.scss"
-
-// html {
+@import './assets/styles/index.scss'; // html {
 //   height: 100%;
 //   max-height: 100vh;
 //   display: flex;

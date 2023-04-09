@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'ufw-blog',
+  displayName: 'ufw-landing',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/ufw-blog',
+  coverageDirectory: '../../coverage/apps/ufw-landing',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
